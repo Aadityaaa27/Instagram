@@ -1,5 +1,5 @@
 import { getFeed, createPost, likePost, unLikePost } from "../services/post.api"
-import { useContext, useEffect } from "react"
+import { useCallback, useContext, useEffect } from "react"
 import { PostContext } from "../post.context"
 
 export const usePost = () => {
@@ -8,12 +8,15 @@ export const usePost = () => {
 
     const { loading, setLoading, post, feed, setFeed } = context
 
-    const handleGetFeed = async () => {
+    const handleGetFeed = useCallback(async () => {
         setLoading(true)
-        const data = await getFeed()
-        setFeed(data.posts.reverse())
-        setLoading(false)
-    }
+        try {
+            const data = await getFeed()
+            setFeed(data.posts.reverse())
+        } finally {
+            setLoading(false)
+        }
+    }, [setFeed, setLoading])
 
     const handleCreatePost = async (imageFile, caption) => {
         setLoading(true)
@@ -37,7 +40,7 @@ export const usePost = () => {
 
     useEffect(() => {
         handleGetFeed()
-    }, [])
+    }, [handleGetFeed])
 
     return { loading, feed, post, handleGetFeed, handleCreatePost, handleLike, handleUnLike }
 
