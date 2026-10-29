@@ -10,9 +10,13 @@ app.use(cookieParser())
 app.use(morgan("dev"))
 app.use(cors({
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
     methods: [ "GET", "POST", "PUT", "DELETE" ],
 }))
+
+app.get("/health", (req, res) => {
+    res.status(200).json({ status: "ok" })
+})
 
 /* require routes */
 const authRouter = require("./routes/auth.routes")

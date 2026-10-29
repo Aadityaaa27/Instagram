@@ -1,5 +1,19 @@
 # React + Vite
 
+## Deployment
+
+The frontend expects the deployed backend URL in `VITE_API_URL`, for example:
+
+```text
+VITE_API_URL=https://your-backend.example.com
+```
+
+The backend requires `MONGO_URI`, `JWT_SECRET`, `IMAGEKIT_PRIVATE_KEY`, and
+`FRONTEND_URL`. Set `PORT` from the hosting provider when it is supplied, and
+set `NODE_ENV=production` for deployed environments.
+
+Build the frontend with `npm run build`. Start the backend with `npm start`.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
