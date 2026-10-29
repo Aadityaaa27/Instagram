@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require("cookie-parser")
 const cors = require("cors")
 const morgan = require("morgan")
+const path = require("path")
 
 
 const app = express();
@@ -27,5 +28,15 @@ const userRouter = require("./routes/user.routes")
 app.use("/api/auth", authRouter)
 app.use("/api/posts", postRouter)
 app.use("/api/users", userRouter)
+
+const frontendDistPath = path.join(__dirname, "../../Frontend/dist")
+app.use(express.static(frontendDistPath))
+app.use((req, res, next) => {
+    if (req.method !== "GET" || req.path.startsWith("/api/")) {
+        return next()
+    }
+
+    res.sendFile(path.join(frontendDistPath, "index.html"))
+})
 
 module.exports = app;
